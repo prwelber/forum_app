@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index Page</title>
+</head>
+<body>
+    <h1>Here are all the posts..</h1>
+    <form action="/topicsview" method="GET">
+        View posts by (most to least): <select name="view">
+            <option value="comments">Comments</option>
+            <option value="upvotes">Upvotes</option>
+            <option value="downvotes">Downvotes</option>
+            <option value="views">Views</option>
+        </select>
+        <input type="submit">
+    </form>
+    <br><br>
+
+    <form action="/searchtopics" method="GET">
+        Search for a post by keyword: <input type="text" name="search" placeholder="ex: cupcakes">
+        <input type="submit" value="keyword search">
+    </form>
+    <br><br>
+
+    <form action="/topics/instagram" method="GET">
+        Search for Instagram pictures and save them as posts. <br>
+        <input type="text" name="instagram" placeholder="the # is added for you">
+        <input type="submit" value="search for grams">
+    </form>
+    <br><br>
+    <a href="/topics/new">Create a Post</a> <br><br>
+   <% if (!topicsData){ %>
+        <h2>There are no posts yet!</h2>
+    <% } else { %>
+    <% topicsData.forEach(function(el){ %>
+        <p>Author: <%=el.username %></p>
+        <p>Title: <%= el.title %></p>
+        <% if (el.img !== '0'){ %>
+                <img src=<%=el.img%>>
+         <% } %>
+        <p><%= el.body %></p>
+        <p>Posted on: <%=el.timestamp %></p>
+        <p>Upvotes: <%= el.upvotes %> </p>
+        <p>Number of comments: <%=el.comments%></p>
+        <form action="/topics/<%=el.id%>/upvote?_method=PUT" method="POST">
+            <input type="submit" value="upvote this post">
+        </form>
+        <a href="/topics/<%=el.id%>">View Post</a>
+        <br><br><br>
+    <%})} %>
+</body>
+</html>

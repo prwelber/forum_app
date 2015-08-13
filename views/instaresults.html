@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show</title>
+</head>
+<body>
+    <h1>Picture Search Results</h1>
+    <h3>Your search was for: #<%=tag%></h3>
+    <br><br>
+    <% pics.forEach(function(el){ %>
+    <form action="/topics/instagram" method="POST">
+        <img src=<%=el%> > <br>
+        <input type="text" name="username" placeholder="username"><br>
+        <input type="text" name="title" placeholder="Image post title"><br>
+        <textarea name="body" rows="3" cols="50" placeholder="Enter your post or caption here..."></textarea>
+        <input type="hidden" name="views" value=0>
+        <input type="hidden" name="comments" value=0>
+        <input type="hidden" name="geolocation" value=0>
+        <input type="hidden" name="img" value=<%=el%>>
+        <input type="hidden" name="upvotes" value=0>
+        <input type="hidden" name="downvotes" value=0><br>
+        <input type="submit" value="Submit Image Post">
+    </form>
+    <% }) %>
+</body>
+</html>

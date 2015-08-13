@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post New Topic</title>
+</head>
+<body>
+    <h1>Create a new post</h1>
+    <form action="/topics" method="POST">
+        <input type="text" name="username" placeholder="username"><br>
+        <input type="text" name="title" placeholder="Give your post a title"><br>
+        <textarea name="body" rows="10" cols="60" placeholder="Enter your post here..."></textarea>
+        <input type="hidden" name="views" value=0>
+        <input type="hidden" name="comments" value=0>
+        <input type="hidden" name="geolocation" value=0>
+        <input type="hidden" name="img" value=0>
+        <input type="hidden" name="upvotes" value=0>
+        <input type="hidden" name="downvotes" value=0><br>
+        <input type="submit" value="Submit Post">
+    </form>
+</body>
+</html>

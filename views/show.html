@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Unique Post</title>
+</head>
+<body>
+    <h1>Unique Post Page</h1>
+    Username: <%= rows[0].username %> <br>
+    Post title/caption: <%= rows[0].title %> <br>
+    <% if (rows[0].img !== '0'){ %>
+				<img src=<%=rows[0].img%>> <br>
+    <% } %>
+    <%= rows[0].body %> <br>
+    Posted on: <%= rows[0].timestamp %> <br>
+    upvotes: <%= rows[0].upvotes %> <br>
+
+		<h2>Comments:</h2>
+			<% if(rows[0].cmt_username){ %>
+					<% rows.forEach(function(el){ %>
+
+					Author: <%= el.cmt_username %> <br>
+			    <%= el.cmt_body %><br>
+			    Commented on: <%= el.cmt_timestamp %> <br><br><br>
+			<% }) %>
+			<% } else { %>
+						<h2>No comments yet. Make one to get the conversation going.</h2>
+			<% } %>
+
+
+		<br><br><br>
+		Add a comment..
+    <form action="/topics/<%=rows[0].id%>/comment" method="POST">
+    	<input type="text" name="username" placeholder="username"><br>
+      <textarea name="body" rows="6" cols="50" placeholder="Enter your comment here..."></textarea>
+      <input type="hidden" name="geolocation" value=0>
+      <input type="hidden" name="img" value=0>
+      <input type="hidden" name="topics_id" value=<%=rows[0].id%>> <br>
+      <input type="submit" value="Submit Comment">
+    </form>
+
+		<a href="/topics">Back Home</a>
+
+</body>
+</html>
