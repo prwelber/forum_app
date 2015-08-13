@@ -7,6 +7,7 @@
 <body>
     <h1>Picture Search Results</h1>
     <h3>Your search was for: #<%=tag%></h3>
+    <a href="/topics">Go back</a>
     <br><br>
     <% pics.forEach(function(el){ %>
     <form action="/topics/instagram" method="POST">

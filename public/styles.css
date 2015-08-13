@@ -1,0 +1,33 @@
+.wrapper {
+    max-width: 960px;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+.header-box {
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 50px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 75px;
+}
+
+
+img {
+    height: 150px;
+    width: 150px;
+}
+
+.content{
+    border: 1px solid black;
+}
+
+.topic-box{
+    height: 500px;
+}
+
+.content{
+    height: 450px;
+}
+

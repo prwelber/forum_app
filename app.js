@@ -35,7 +35,7 @@ app.get('/topics', function(req, res){
     } else {
       var topicsData = rows;
       console.log(topicsData[2].img)
-      var template = fs.readFileSync('./views/index.html', 'utf8');
+      var template = fs.readFileSync('./views/alltopics.html', 'utf8');
       var rendered = ejs.render(template, {topicsData: topicsData});
       res.send(rendered);
     }
@@ -151,6 +151,10 @@ app.get('/topics/instagram', function(req, res){
   var instagram_api = process.env.instagram_api;
   //var tag = rawTag.replace(/ /g, "_");
 
+  // INSTEAD:
+  // var myRenderedData = getDataFromApiAndRender(url, tag, filename, apiKey)
+  // res.send(myRenderedData)
+
   var requestURL = "https://api.instagram.com/v1/tags/"+tag+"/media/recent?client_id="+instagram_api
     request.get(requestURL, function(err, response, body) {
     var parsedBody = JSON.parse(body);
@@ -169,11 +173,7 @@ app.get('/topics/instagram', function(req, res){
 
 
 app.post('/topics/instagram', function(req, res){
-//pull in using hidden form
-//send to DB and add as post
-//redirect to page to view post
-//i can do 'if img !0' then render certain html
-//img html would just have img instead of text...maybe can do control flow in show.html
+
   console.log('insta post route hit');
   console.log(req.body);
   db.run("INSERT INTO topics (username, title, body, views, comments, geolocation, img, upvotes, downvotes) VALUES (?,?,?,?,?,?,?,?,?);", req.body.username, req.body.title, req.body.body, req.body.views, req.body.comments, req.body.geolocation, req.body.img, req.body.upvotes, req.body.downvotes,
