@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View all topics</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/combo?pure/0.6.0/base-min.css&pure/0.6.0/grids-min.css&pure/0.6.0/grids-responsive-min.css">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.0.2/css/hover-min.css">
+    <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+    <div class="pure-g wrapper">
+        <header class="pure-u-1">
+            <div class="header-box">
+                <h1>Unimpressive Internet Forum</h1>
+                <h3>Trolling Optional</h3> 
+                <!-- Nav -->   
+                <nav class="pure-menu pure-menu-horizontal pure-u-1">
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item">
+                      <a href="/" class="pure-menu-link">Intro</a>
+                    </li>
+                    <li class="pure-menu-item">
+                      <a href="/topics" class="pure-menu-link">View All Posts</a>
+                    </li>
+                    <li class="pure-menu-item instasearch">
+                      <a href="#" class="pure-menu-link">Post from Instagram</a> 
+                      <form action="/topics/instagram" method="GET">
+                        <input type="text" name="instagram" placeholder="# is added (no spaces)">
+                        <input type="submit" value="search">
+                    </form>
+                    </li>
+                    <li class="pure-menu-item twittersearch">
+                      <a href="#" class="pure-menu-link">Post from Twitter</a>
+                    </li>
+                    <li class="pure-menu-item">
+                      <a href="/topics/new" class="pure-menu-link">Create</a>
+                    </li>
+                </ul>
+                </nav>         
+            </div>
+        </header>
+
+<!-- topic -->
+        <div class="topic-container">
+            <div class=" pure-u-1 topic-content">
+                Username: <%= rows[0].username %> <br>
+                Post title/caption: <%= rows[0].title %> <br>
+                <img class="topic-img" src=<%=rows[0].img%>> <br>
+                <%= rows[0].body %> <br>
+                Posted on: <%= rows[0].timestamp %> <br>
+                upvotes: <%= rows[0].upvotes %> <br>
+            </div>
+        </div>
+        <!-- comments -->
+        <div class="comments-container">
+            <div class="pure-u-1">
+                
+                <h2>Comments:</h2>
+                    <% if(rows[0].cmt_username){ %>
+                        <% rows.forEach(function(el){ %>
+                            <div class=" pure-u-1-5 comments-content">
+                                
+                                Author: <%= el.cmt_username %> <br>
+                                <%= el.cmt_body %><br>
+                                Commented on: <%= el.cmt_timestamp %> <br><br><br>
+                            </div>
+                            <% }) %>
+                            <% } else { %>
+                            <h2>No comments yet. Make one to get the conversation going.</h2>
+                        <% } %>
+
+            </div>
+        </div>
+        <div class="add-comment-container">
+            <div class="pure-u-1 comment-content">
+                
+                <h1>Add a comment..</h1>
+                <form class ="pure-form pure-form-stacked" action="/topics/<%=rows[0].id%>/comment" method="POST">
+                  <input type="text" name="username" placeholder="username"><br>
+                  <textarea name="body" rows="6" cols="50" placeholder="Enter your comment here..."></textarea>
+                  <input type="hidden" name="geolocation" value=0>
+                  <input type="hidden" name="img" value=0>
+                  <input type="hidden" name="topics_id" value=<%=rows[0].id%>> <br>
+                  <input type="submit" value="Submit Comment">
+                </form>
+            </div>
+        </div>    
+    </div>
+</body>
+</html>

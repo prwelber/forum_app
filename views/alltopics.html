@@ -5,14 +5,16 @@
     <title>View all topics</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/combo?pure/0.6.0/base-min.css&pure/0.6.0/grids-min.css&pure/0.6.0/grids-responsive-min.css">
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.0.2/css/hover-min.css">
+    <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
 </head>
 <body>
     <div class="pure-g wrapper">
         <header class="pure-u-1">
             <div class="header-box">
-                <h1>Unimpressive Internet Forum</h1>
-                <h3>Trolls Not Welcome</h3> 
+                <h1>UNIMPRESSIVE INTERNET FORUM</h1>
+                <h3>Trolling Optional</h3> 
                 <!-- Nav -->   
                 <nav class="pure-menu pure-menu-horizontal pure-u-1">
                 <ul class="pure-menu-list">
@@ -20,12 +22,16 @@
                       <a href="/" class="pure-menu-link">Intro</a>
                     </li>
                     <li class="pure-menu-item">
-                      <a href="/topics" class="pure-menu-link">All Posts</a>
+                      <a href="/topics" class="pure-menu-link">View All Posts</a>
                     </li>
-                    <li class="pure-menu-item">
-                      <a href="#" class="pure-menu-link">Post from Instagram</a>
+                    <li class="pure-menu-item instasearch">
+                      <a href="#" class="pure-menu-link">Post from Instagram</a> 
+                      <form action="/topics/instagram" method="GET">
+                        <input type="text" name="instagram" placeholder="# is added (no spaces)">
+                        <input type="submit" value="search">
+                    </form>
                     </li>
-                    <li class="pure-menu-item">
+                    <li class="pure-menu-item twittersearch">
                       <a href="#" class="pure-menu-link">Post from Twitter</a>
                     </li>
                     <li class="pure-menu-item">
@@ -38,12 +44,24 @@
 
 <!-- body -->
     <div class="pure-g topics-container">
+    <div class="pure-u-1 sort">
+    <form action="/topicsview" method="GET">
+        View posts by (most to least): <select name="view">
+            <option value="comments">Comments</option>
+            <option value="upvotes">Upvotes</option>
+            <option value="downvotes">Downvotes</option>
+            <option value="views">Views</option>
+        </select>
+        <input type="submit">
+    </form>
+    </div>
     <% if (!topicsData){ %>
             <h2>There are no posts yet!</h2>
     <% } else { %>
             <% topicsData.forEach(function(el){ %>
-                <div class="pure-u-1-3 topic-box">
-                    <div class="content">
+                <div class="pure-u-1-3 topic-box"><a id="load-point-<%=el.id%>"></a>
+                    <a href="/topics/<%=el.id%>"><div class="content hvr-grow">
+                    
                     <p class="author">Author: <%=el.username %></p>
                     <p class="title">Title: <%= el.title %></p>
                     <% if (el.img !== '0'){ %>
@@ -56,38 +74,11 @@
                     <form action="/topics/<%=el.id%>/upvote?_method=PUT" method="POST">
                         <input type="submit" value="upvote this post">
                     </form>
-                    <a href="/topics/<%=el.id%>">View Post</a>
+                    <!-- <a href="/topics/<%=el.id%>">View Post</a> -->
                 
-                    </div>
+                    </div></a>
             </div>
     <%})} %>
-
-
-
-
-        <div class="pure-u-1-3 topic-box">
-            <div class="content">
-                <h3>Image Title</h3>
-                
-            </div>
-        </div>
-        <div class="pure-u-1-3 topic-box">
-            <div class="content">
-                <h3>Image Title</h3>
-                
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
 
 
         </div>

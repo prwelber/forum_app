@@ -55,6 +55,10 @@ app.post('/topics', function(req, res){
   console.log(req.body);
   var rbody = req.body;
 
+  if(rbody.img == 0){
+    rbody.img = "http://challenges.s3.amazonaws.com/mta-app-quest/GA_logo.png"
+  }
+
   db.run("INSERT INTO topics (username, title, body, views, comments, geolocation, img, upvotes, downvotes) VALUES (?,?,?,?,?,?,?,?,?);", 
     rbody.username, rbody.title, rbody.body, rbody.views, rbody.comments, rbody.geolocation, rbody.img, rbody.upvotes, rbody.downvotes,
     function(err){
@@ -103,7 +107,7 @@ app.post('/topics/:id/comment', function(req, res){
           if (err){
             console.log(err);
           } else {
-        res.redirect('/topics');
+        res.redirect('/topics/');
           }
         })
       }
@@ -118,7 +122,7 @@ app.put('/topics/:id/upvote', function(req, res){
     if (err){
       console.log(err)
     } else {
-      res.redirect('/topics')
+      res.redirect('/topics#load-point-'+id)
     }
     })//end of db.run UPDATE
 })//end of app.post
@@ -128,7 +132,7 @@ app.get('/topicsview', function(req, res){
   db.all("SELECT * FROM topics ORDER BY "+req.query.view+" DESC;", function(err, rows){
     console.log(rows);
     var topicsData = rows;
-    var template = fs.readFileSync('./views/index.html', 'utf8');
+    var template = fs.readFileSync('./views/alltopics.html', 'utf8');
     var rendered = ejs.render(template, {topicsData: topicsData});
     res.send(rendered);
   })
@@ -190,7 +194,7 @@ app.post('/topics/instagram', function(req, res){
 app.get('/topics/:id', function(req, res){
   console.log('unique id get route hit')
   var idFromParams = req.params.id;
-  var template = fs.readFileSync('./views/show.html', 'utf8');
+  var template = fs.readFileSync('./views/view.html', 'utf8');
   db.all("SELECT topics.id, topics.img, comments.cmt_body, comments.cmt_username, comments.cmt_timestamp, topics.body, topics.timestamp, topics.upvotes, topics.title, topics.username FROM topics LEFT OUTER JOIN comments ON comments.topics_id = topics.id WHERE topics.id="+req.params.id, function(err, rows){
     if (err) {
       console.log(err)
