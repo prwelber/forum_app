@@ -234,7 +234,7 @@ app.post('/topics/google_maps', function(req, res){
       }
     })//end of db.run
   })
-  res.redirect('/topics');
+  res.redirect('/');
 })//end of app.post google_maps
 
 

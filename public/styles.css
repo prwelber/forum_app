@@ -1,5 +1,5 @@
 body {
-background-color: #D4D4D4;
+background-color: #E6E6E6;
 
 }
 
@@ -123,12 +123,16 @@ p {
     margin-left: 40px;
 }
 
-.topics-container{
+/*.topics-container{
     border: 1px solid black;
     border-radius: 50px;
 }
+*/
 
-
+.create-form{
+    text-align: center;
+    margin-left: 300px;
+}
 
 
 

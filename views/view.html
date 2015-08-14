@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.0.2/css/hover-min.css">
     <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+
 
 </head>
 <body>
@@ -22,26 +24,27 @@
                 <nav class="pure-menu pure-menu-horizontal pure-u-1">
                 <ul class="pure-menu-list">
                     <li class="pure-menu-item">
-                      <a href="/topics" class="pure-menu-link">All Posts</a>
+                      <a href="/topics" class="pure-menu-link"><i class="fa fa-eye fa-4x"></i></a>
                     </li>
-                   <!--  <li class="pure-menu-item twittersearch">
-                      <a href="#" class="pure-menu-link">Post from Twitter</a>
-                    </li> -->
                     <li class="pure-menu-item">
-                      <a href="/topics/new" class="pure-menu-link">Create</a>
+                      <a href="/topics/new" class="pure-menu-link"><i class="fa fa-plus fa-4x"></i></a>
                     </li>
                 </ul>
-                </nav>         
+                </nav>     
             </div>
         </header>
 
 <!-- body -->
-    <div class="pure-u-1-3 pure-menu pure-menu-horizontal sort-search">
-    <form class="pure-u-1-3" action="topics/google_maps" method="GET">
+    <div class="pure-g explain-wrapper">
+    <div class="pure-u-1-2"><div class="street-view"><p>Use a Street View pic for your post</p></div></div>
+    <div class="pure-u-1-2"><div class="insta-view"><p>Use an Instagram pic for your post</p></div></div>
+    </div>
+    <div class="pure-g pure-menu pure-menu-horizontal sort-search">
+    <form class="pure-u-1-2" action="topics/google_maps" method="GET">
         <input type="text" name="maps" placeholder="search for an address">
         <input type="submit" value="search">
     </form> 
-    <form class="pure-u-1-3" action="/topics/instagram" method="GET">
+    <form class="pure-u-1-2" action="/topics/instagram" method="GET">
         <input type="text" name="instagram" placeholder="search instagram">
         <input type="submit" value="search">
     </form>
@@ -74,8 +77,8 @@
                                     <p class="comment-body"><%=el.cmt_body%></p>
                                     <p class="comment-time"> <%=el.cmt_timestamp%></p>
                                     <form class="pure-form" action="/topics/<%=subData[0].id%>/comment/subcomment/<%=el.cmt_id%>" method="POST">
-                                        <input type="text" name="username" placeholder="username">
-                                        <textarea name="body" cols="30" rows="1" placeholder="add subcomment here"></textarea>
+                                        <input type="text" name="username" placeholder="username" style="width: 100px; height: 30px;">
+                                        <textarea name="body" cols="30" rows="1" placeholder="subcomment" style="height: 30px;"></textarea>
                                         <input type="submit" value="add subcomment">   
                                         <input type="hidden" name="timestamp">
                                         <input type="hidden" name="comment_id" value=<%= el.cmt_id %> >
@@ -87,8 +90,8 @@
                                        <div class="subcomments">
                                        <p class="connector">|</p>
                                        <p class="connector">|</p>
-                                       sub user: <%=el.sub_username%> <br>
-                                       sub body: <%=el.sub_body%> <br><br>
+                                       Subcommented by <%=el.sub_username%> <br>
+                                       <%=el.sub_body%> <br><br>
                                        </div>
                                        </div>
                                     <%} else {%>
