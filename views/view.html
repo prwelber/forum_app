@@ -11,6 +11,7 @@
 
 </head>
 <body>
+
     <div class="pure-g wrapper">
         <header class="pure-u-1">
             <div class="header-box">
@@ -44,28 +45,51 @@
         </header>
 
 <!-- topic -->
-        <div class="topic-container">
-            <div class=" pure-u-1 topic-content">
+        <div class="pure-u-1 topic-container">
+            <div class="topic-content">
                 Username: <%= rows[0].username %> <br>
                 Post title/caption: <%= rows[0].title %> <br>
                 <img class="topic-img" src=<%=rows[0].img%>> <br>
                 <%= rows[0].body %> <br>
                 Posted on: <%= rows[0].timestamp %> <br>
+                Posted from: <%= rows[0].geolocation %> <br>
                 upvotes: <%= rows[0].upvotes %> <br>
             </div>
         </div>
         <!-- comments -->
-        <div class="comments-container">
-            <div class="pure-u-1">
+        <div class="pure-u-1 comments-container">
+            <div class="comments-content">
                 
                 <h2>Comments:</h2>
                     <% if(rows[0].cmt_username){ %>
                         <% rows.forEach(function(el){ %>
-                            <div class=" pure-u-1-5 comments-content">
+                            <div class=" pure-u-1 comments-content">
                                 
-                                Author: <%= el.cmt_username %> <br>
+                                By <%= el.cmt_username %> <br>
+                                <%= el.cmt_timestamp %> <br>
                                 <%= el.cmt_body %><br>
-                                Commented on: <%= el.cmt_timestamp %> <br><br><br>
+                                    <div class="pure-u-1 subcomment">
+                                        <%=if(subData[0].sub_username){%>
+                                            <%subData.forEach(function(sub){%>
+                                               By <%=sub.sub_username%>
+                                                <%=sub.sub_timestamp%>
+                                                <%=sub.sub_body%>
+                                                <%})%>
+                                        <%} else {%>
+                                        <p>There are no subcomments yet.</p>
+                                        <%=}%>
+                                    </div>
+
+
+
+
+                                <form class="pure-form pure-form-stacked" action="/topics/<%=rows[0].id%>/comment/subcomment/<%=el.cmt_id%>" method="POST">
+                                <p>Add a subcomment..</p>
+                                <input type="text" name="username" placeholder="username">
+                                <textarea name="body" cols="30" rows="5"></textarea>
+                                <input type="hidden" name="timestamp">
+                                <input type="hidden" name="comment_id" value=<%= el.cmt_id %> >   
+                                </form>
                             </div>
                             <% }) %>
                             <% } else { %>
@@ -78,7 +102,7 @@
             <div class="pure-u-1 comment-content">
                 
                 <h1>Add a comment..</h1>
-                <form class ="pure-form pure-form-stacked" action="/topics/<%=rows[0].id%>/comment" method="POST">
+                <form class="pure-form pure-form-stacked" action="/topics/<%=rows[0].id%>/comment" method="POST">
                   <input type="text" name="username" placeholder="username"><br>
                   <textarea name="body" rows="6" cols="50" placeholder="Enter your comment here..."></textarea>
                   <input type="hidden" name="geolocation" value=0>

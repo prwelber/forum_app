@@ -18,16 +18,17 @@ app.use(methodOverride('_method'));
 app.use(express.static('public'));
 //config
 app.listen(3000, function() {
-  console.log("Find the forum on port 3000");
+  console.log("Forum on port 3000");
 });
 
 app.get('/', function(req, res){
   var template = fs.readFileSync('./views/startPage.html', 'utf8');
   var rendered = ejs.render(template);
-  res.send(rendered);
+  res.redirect('/topics');
 })
 
 app.get('/topics', function(req, res){
+  var google_api = process.env.google_api;
   console.log('GET /topics route hit!')
   db.all("SELECT * FROM topics;", function(err, rows){
     if (err) {
@@ -36,7 +37,7 @@ app.get('/topics', function(req, res){
       var topicsData = rows;
       console.log(topicsData[2].img)
       var template = fs.readFileSync('./views/alltopics.html', 'utf8');
-      var rendered = ejs.render(template, {topicsData: topicsData});
+      var rendered = ejs.render(template, {topicsData: topicsData, google_api: google_api});
       res.send(rendered);
     }
   })//end of db.all
@@ -54,13 +55,19 @@ app.post('/topics', function(req, res){
   console.log('post route hit');
   console.log(req.body);
   var rbody = req.body;
-
   if(rbody.img == 0){
     rbody.img = "http://challenges.s3.amazonaws.com/mta-app-quest/GA_logo.png"
   }
 
+  var requestURL = "http://ipinfo.io/geo"
+  request.get(requestURL, function(err, response, body) {
+    var parsedBody = JSON.parse(body); 
+    console.log(parsedBody);
+    geolocation = parsedBody.city +", "+ parsedBody.region;
+    console.log(geolocation);
+
   db.run("INSERT INTO topics (username, title, body, views, comments, geolocation, img, upvotes, downvotes) VALUES (?,?,?,?,?,?,?,?,?);", 
-    rbody.username, rbody.title, rbody.body, rbody.views, rbody.comments, rbody.geolocation, rbody.img, rbody.upvotes, rbody.downvotes,
+    rbody.username, rbody.title, rbody.body, rbody.views, rbody.comments, geolocation, rbody.img, rbody.upvotes, rbody.downvotes,
     function(err){
       if (err){
         console.log(err)
@@ -68,30 +75,8 @@ app.post('/topics', function(req, res){
         res.redirect('/topics');
       }
     })//end of db.run
+  })//end of request
 })//end of app.post '/topics'
-
-
-
-// app.get('/topics/:id', function(req, res){
-//   console.log('unique id get route hit')
-//   var id = req.params.id;
-//   db.all("SELECT * FROM topics;", function(err, rows){
-//     if (err) {
-//       console.log(err)
-//     } else {
-//       rows.forEach(function(el){
-//         if (el.id == id){
-//           var template = fs.readFileSync('./views/show.html', 'utf8');
-//           var rendered = ejs.render(template, {rows: rows, el: el});
-//           res.send(rendered);
-//         }
-//       })//end of rows.forEach
-//     }
-//   })//end of db.all
-// })//end of app.get /topics/:id
-
-
-
 
 app.post('/topics/:id/comment', function(req, res){
   console.log('comment post route hit')
@@ -114,6 +99,21 @@ app.post('/topics/:id/comment', function(req, res){
     })//end of db.run INSERT
 })//endof app.post /topics/:id/comment
 
+app.post('/topics/:id/comment/subcomment/:subid', function(req, res){
+  console.log('subcomment route hit');
+  console.log(req.body);
+  console.log(req.params);
+  console.log(req.params.subid);
+
+  db.run("INSERT INTO subcomments (sub_username, sub_body, comment_id) VALUES (?,?,?);", req.body.username, req.body.body, req.body.comment_id, function(err){
+    if (err){
+      console.log(err)
+    } else {
+      res.redirect('/topics')
+    }
+  })//end of db.run INSERT INTO subcomments
+
+})//end of app.post for subcomments
 
 app.put('/topics/:id/upvote', function(req, res){
   console.log('put route hit for upvote')
@@ -140,9 +140,22 @@ app.get('/topicsview', function(req, res){
 
 app.get('/searchtopics', function(req, res){
   console.log(req.query.search);
-  db.all("SELECT * FROM topics INNER JOIN comments ON comments.topics_id = topics.id;", function(err, rows){
+  searchArray = [];
+  db.all("SELECT comments.cmt_body, topics.body, topics.title FROM topics LEFT OUTER JOIN comments ON comments.topics_id = topics.id;", function(err, rows){
+    if (err){
+      console.log(err)
+    } else {
+      //console.log(rows);
+      rows.forEach(function (el, index, array){
+        searchArray.push(el.body);
+      });
+      searchArray.toString();
+      console.log(searchArray);
+      var searching = _.contains(searchArray, "feed");
+      console.log(searching);
+      //console.log(rows);
+    }
     
-
   })//end of db.all SELECT 
 })//end of app.get /search
 
@@ -175,33 +188,72 @@ app.get('/topics/instagram', function(req, res){
   })//end of request.get
 })//end of app.get instagram
 
-
 app.post('/topics/instagram', function(req, res){
-
   console.log('insta post route hit');
-  console.log(req.body);
-  db.run("INSERT INTO topics (username, title, body, views, comments, geolocation, img, upvotes, downvotes) VALUES (?,?,?,?,?,?,?,?,?);", req.body.username, req.body.title, req.body.body, req.body.views, req.body.comments, req.body.geolocation, req.body.img, req.body.upvotes, req.body.downvotes,
+  var requestURL = "http://ipinfo.io/geo"
+  request.get(requestURL, function(err, response, body) {
+    var parsedBody = JSON.parse(body); 
+    geolocation = parsedBody.city +", "+ parsedBody.region;
+  db.run("INSERT INTO topics (username, title, body, views, comments, geolocation, img, upvotes, downvotes) VALUES (?,?,?,?,?,?,?,?,?);", req.body.username, req.body.title, req.body.body, req.body.views, req.body.comments, geolocation, req.body.img, req.body.upvotes, req.body.downvotes,
     function(err){
       if (err) {
         console.log(err);
       }
     })//end of db.run
+  })
   res.redirect('/topics');
-
 })//end of app.post topics/instagram
+
+app.get('/topics/google_maps', function(req, res){
+  console.log('google maps route hit');
+  var googleApi = process.env.google_streetview_api;
+  var query = req.query.maps;
+  var query = query.replace(/ /g, "+");
+  console.log(query);
+  var requestUrl = "https://maps.googleapis.com/maps/api/streetview?key="+googleApi+"&size=600x400&location="+query
+  request.get(requestUrl, function(err, response, body){
+    var template = fs.readFileSync('./views/streetview.html', 'utf8');
+    var render = ejs.render(template, {body: body, requestUrl: requestUrl, googleApi: googleApi, query:query});
+    res.send(render);
+  })//end of request.get
+})//end of app.post google_maps
+
+
+app.post('/topics/google_maps', function(req, res){
+  console.log('post streetview route hit');
+  var requestURL = "http://ipinfo.io/geo"
+  request.get(requestURL, function(err, response, body) {
+    var parsedBody = JSON.parse(body); 
+    geolocation = parsedBody.city +", "+ parsedBody.region;
+  db.run("INSERT INTO topics (username, title, body, views, comments, geolocation, img, upvotes, downvotes) VALUES (?,?,?,?,?,?,?,?,?);", req.body.username, req.body.title, req.body.body, req.body.views, req.body.comments, geolocation, req.body.img, req.body.upvotes, req.body.downvotes,
+    function(err){
+      if (err) {
+        console.log(err);
+      }
+    })//end of db.run
+  })
+  res.redirect('/topics');
+})//end of app.post google_maps
 
 
 app.get('/topics/:id', function(req, res){
   console.log('unique id get route hit')
   var idFromParams = req.params.id;
   var template = fs.readFileSync('./views/view.html', 'utf8');
-  db.all("SELECT topics.id, topics.img, comments.cmt_body, comments.cmt_username, comments.cmt_timestamp, topics.body, topics.timestamp, topics.upvotes, topics.title, topics.username FROM topics LEFT OUTER JOIN comments ON comments.topics_id = topics.id WHERE topics.id="+req.params.id, function(err, rows){
+  db.all("SELECT topics.geolocation, topics.id, topics.img, comments.cmt_body, comments.cmt_username, comments.cmt_timestamp, topics.body, topics.timestamp, topics.upvotes, topics.title, topics.username FROM topics LEFT OUTER JOIN comments ON comments.topics_id = topics.id WHERE topics.id="+req.params.id, function(err, rows){
     if (err) {
       console.log(err)
     } else {
-      console.log(rows);
-      var render = ejs.render(template, {rows: rows})
-      res.send(render);
+      //console.log(rows);
+      db.all("SELECT * FROM subcomments;", function(err, subData){
+        if (err){
+          console.log(err)
+        } else {
+          console.log(subData)
+          var render = ejs.render(template, {rows: rows, subData: subData})
+          res.send(render);
+        }
+      })
     }
   })//end of db.get
 })//end of app.get /topics/:id

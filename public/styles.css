@@ -38,13 +38,13 @@ a {
     margin-bottom: 40px;
 }
 
-.instasearch{
+/*.instasearch{
     margin-top: 25px;
-}
+}*/
 
 .pure-menu-item{
-    margin-left: 25px;
-    margin-right: 25px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 img {
     height: 150px;
@@ -52,8 +52,8 @@ img {
 }
 
 .topic-img{
-    height: 500px;
-    width: 500px;
+    height: 450px;
+    width: 600px;
 }
 
 .topic-box{
@@ -64,9 +64,8 @@ img {
     height: 450px;
 }
 
-.topic-content{
+.sort-search{
     margin-bottom: 50px;
-    width: 100%;
 }
 
 

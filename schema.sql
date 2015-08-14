@@ -25,7 +25,14 @@ cmt_img varchar,
 FOREIGN KEY (topics_id) REFERENCES topics (id)
 );
 
-
+CREATE TABLE subcomments(
+sub_id INTEGER PRIMARY KEY,
+sub_username varchar,
+sub_body TEXT,
+sub_timestamp DATE DEFAULT (datetime('now', 'localtime')),
+comment_id INTEGER,
+FOREIGN KEY (comment_id) REFERENCES comments (cmt_id)
+);
 
 
 -- Test table

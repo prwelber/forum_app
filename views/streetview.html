@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <img src="<%=requestUrl%>">
+    <form action="/topics/google_maps" method="POST">
+        <input type="text" name="username" placeholder="Username"><br>
+        <input type="text" name="title" placeholder="Post title"><br>
+        <textarea name="body" rows="3" cols="50" placeholder="Enter your post or caption here..."></textarea>
+        <input type="hidden" name="views" value=0>
+        <input type="hidden" name="comments" value=0>
+        <input type="hidden" name="geolocation" value=0>
+        <input type="hidden" name="img" value=<%=requestUrl%>>
+        <input type="hidden" name="upvotes" value=0>
+        <input type="hidden" name="downvotes" value=0><br>
+        <input type="submit" value="Submit Image Post">
+    </form>
+    </div>
+</body>
+</html>
