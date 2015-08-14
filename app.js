@@ -102,8 +102,10 @@ app.post('/topics/:id/comment', function(req, res){
 app.post('/topics/:id/comment/subcomment/:subid', function(req, res){
   console.log('subcomment route hit');
   console.log(req.body);
+  var id = req.params.id;
   console.log(req.params);
   console.log(req.params.subid);
+  var subid = req.params.subid;
 
   db.run("INSERT INTO subcomments (sub_username, sub_body, comment_id) VALUES (?,?,?);", req.body.username, req.body.body, req.body.comment_id, function(err){
     if (err){
@@ -240,12 +242,12 @@ app.get('/topics/:id', function(req, res){
   console.log('unique id get route hit')
   var idFromParams = req.params.id;
   var template = fs.readFileSync('./views/view.html', 'utf8');
-  db.all("SELECT topics.geolocation, topics.id, topics.img, comments.cmt_body, comments.cmt_username, comments.cmt_timestamp, topics.body, topics.timestamp, topics.upvotes, topics.title, topics.username FROM topics LEFT OUTER JOIN comments ON comments.topics_id = topics.id WHERE topics.id="+req.params.id, function(err, rows){
+  db.all("SELECT topics.geolocation, topics.id, topics.img, comments.cmt_body, comments.cmt_id, comments.cmt_username, comments.cmt_timestamp, topics.body, topics.timestamp, topics.upvotes, topics.title, topics.username FROM topics LEFT OUTER JOIN comments ON comments.topics_id = topics.id WHERE topics.id="+req.params.id, function(err, rows){
     if (err) {
       console.log(err)
     } else {
-      //console.log(rows);
-      db.all("SELECT * FROM subcomments;", function(err, subData){
+      console.log(rows);
+      db.all("SELECT topics.img, topics.username, topics.body, topics.timestamp, topics.title, topics.geolocation, topics.upvotes, topics.id, comments.cmt_id, comments.cmt_username, comments.cmt_body, comments.cmt_timestamp, comments.topics_id, topics.id, subcomments.sub_id, subcomments.sub_username, subcomments.sub_body, subcomments.sub_timestamp, subcomments.comment_id FROM comments LEFT OUTER JOIN subcomments ON subcomments.comment_id = comments.cmt_id LEFT OUTER JOIN topics ON topics.id = comments.topics_id WHERE topics.id="+req.params.id, function(err, subData){
         if (err){
           console.log(err)
         } else {
@@ -253,7 +255,7 @@ app.get('/topics/:id', function(req, res){
           var render = ejs.render(template, {rows: rows, subData: subData})
           res.send(render);
         }
-      })
+      })//end of db.all
     }
   })//end of db.get
 })//end of app.get /topics/:id

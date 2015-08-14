@@ -13,29 +13,20 @@
 <body>
 
     <div class="pure-g wrapper">
+    <div class="pure-g wrapper">
         <header class="pure-u-1">
             <div class="header-box">
-                <h1>Unimpressive Internet Forum</h1>
+                <h1>UNIMPRESSIVE INTERNET FORUM</h1>
                 <h3>Trolling Optional</h3> 
                 <!-- Nav -->   
                 <nav class="pure-menu pure-menu-horizontal pure-u-1">
                 <ul class="pure-menu-list">
                     <li class="pure-menu-item">
-                      <a href="/" class="pure-menu-link">Intro</a>
+                      <a href="/topics" class="pure-menu-link">All Posts</a>
                     </li>
-                    <li class="pure-menu-item">
-                      <a href="/topics" class="pure-menu-link">View All Posts</a>
-                    </li>
-                    <li class="pure-menu-item instasearch">
-                      <a href="#" class="pure-menu-link">Post from Instagram</a> 
-                      <form action="/topics/instagram" method="GET">
-                        <input type="text" name="instagram" placeholder="# is added (no spaces)">
-                        <input type="submit" value="search">
-                    </form>
-                    </li>
-                    <li class="pure-menu-item twittersearch">
+                   <!--  <li class="pure-menu-item twittersearch">
                       <a href="#" class="pure-menu-link">Post from Twitter</a>
-                    </li>
+                    </li> -->
                     <li class="pure-menu-item">
                       <a href="/topics/new" class="pure-menu-link">Create</a>
                     </li>
@@ -43,6 +34,18 @@
                 </nav>         
             </div>
         </header>
+
+<!-- body -->
+    <div class="pure-u-1-3 pure-menu pure-menu-horizontal sort-search">
+    <form class="pure-u-1-3" action="topics/google_maps" method="GET">
+        <input type="text" name="maps" placeholder="search for an address">
+        <input type="submit" value="search">
+    </form> 
+    <form class="pure-u-1-3" action="/topics/instagram" method="GET">
+        <input type="text" name="instagram" placeholder="search instagram">
+        <input type="submit" value="search">
+    </form>
+    </div>
 
 <!-- topic -->
         <div class="pure-u-1 topic-container">
@@ -61,42 +64,42 @@
             <div class="comments-content">
                 
                 <h2>Comments:</h2>
-                    <% if(rows[0].cmt_username){ %>
-                        <% rows.forEach(function(el){ %>
-                            <div class=" pure-u-1 comments-content">
-                                
-                                By <%= el.cmt_username %> <br>
-                                <%= el.cmt_timestamp %> <br>
-                                <%= el.cmt_body %><br>
-                                    <div class="pure-u-1 subcomment">
-                                        <%=if(subData[0].sub_username){%>
-                                            <%subData.forEach(function(sub){%>
-                                               By <%=sub.sub_username%>
-                                                <%=sub.sub_timestamp%>
-                                                <%=sub.sub_body%>
-                                                <%})%>
-                                        <%} else {%>
-                                        <p>There are no subcomments yet.</p>
-                                        <%=}%>
-                                    </div>
+                    <% if(rows[0].id > 0){ %>
+                        
 
-
-
-
-                                <form class="pure-form pure-form-stacked" action="/topics/<%=rows[0].id%>/comment/subcomment/<%=el.cmt_id%>" method="POST">
-                                <p>Add a subcomment..</p>
-                                <input type="text" name="username" placeholder="username">
-                                <textarea name="body" cols="30" rows="5"></textarea>
-                                <input type="hidden" name="timestamp">
-                                <input type="hidden" name="comment_id" value=<%= el.cmt_id %> >   
-                                </form>
-                            </div>
-                            <% }) %>
-                            <% } else { %>
-                            <h2>No comments yet. Make one to get the conversation going.</h2>
-                        <% } %>
-
-            </div>
+                                <%subData.forEach(function(el, i, arr){%>
+                                <div class="pure-u-1">
+                                <div class="comments-text">
+                                    <p class="comment-username"><%=el.cmt_username%></p>
+                                    <p class="comment-body"><%=el.cmt_body%></p>
+                                    <p class="comment-time"> <%=el.cmt_timestamp%></p>
+                                    <form class="pure-form" action="/topics/<%=subData[0].id%>/comment/subcomment/<%=el.cmt_id%>" method="POST">
+                                        <input type="text" name="username" placeholder="username">
+                                        <textarea name="body" cols="30" rows="1" placeholder="add subcomment here"></textarea>
+                                        <input type="submit" value="add subcomment">   
+                                        <input type="hidden" name="timestamp">
+                                        <input type="hidden" name="comment_id" value=<%= el.cmt_id %> >
+                                    </form>
+                                </div>
+                                </div>
+                                    <%if(el.sub_timestamp !==  null){%>
+                                       <div class="pure-u-1">
+                                       <div class="subcomments">
+                                       <p class="connector">|</p>
+                                       <p class="connector">|</p>
+                                       sub user: <%=el.sub_username%> <br>
+                                       sub body: <%=el.sub_body%> <br><br>
+                                       </div>
+                                       </div>
+                                    <%} else {%>
+                                        <div class="pure-u-1">
+                                        <%console.log('no subcomments')%>
+                                        </div>
+                                    <%}%>
+                                <%})%>
+                                <%} else {%>
+                                    <h3>No comments yet..you can be that guy who comments 'first' -__- </h3>
+                                <%}%>
         </div>
         <div class="add-comment-container">
             <div class="pure-u-1 comment-content">

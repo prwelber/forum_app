@@ -68,6 +68,67 @@ img {
     margin-bottom: 50px;
 }
 
+.comments-container{
+    text-align: center;
+    margin: 0 auto;
+}
+
+.subcomments{
+    border-radius: 25px;
+}
+
+.connector {
+    margin: 0;
+    padding: 0;
+}
+
+.comment-username, .comment-body, .comment-time{
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+}
+
+.comment-username{
+    font-size: 22px;
+    font-weight: bold; 
+}
+
+.comment-time{
+    font-size: 14px;
+}
+
+p {
+    font-family:'Lora', serif;
+    margin-bottom: 0;
+}
+ .explain-wrapper{
+    width: 1000px;
+    margin-left: 30px;
+ }
+
+.street, .insta, .sort{
+    margin-top: 40px;
+}
+
+.sort{
+    margin-bottom: 10px;
+    margin-left: 100px;
+}
+
+.street{
+    margin-right: 20px;
+}
+
+.insta{
+    margin-left: 40px;
+}
+
+.topics-container{
+    border: 1px solid black;
+    border-radius: 50px;
+}
+
+
 
 
 
