@@ -82,18 +82,18 @@ img {
     padding: 0;
 }
 
-.comment-username, .comment-body, .comment-time{
+.username, .body, .time{
     margin: 0;
     padding: 0;
     font-size: 18px;
 }
 
-.comment-username{
+.username{
     font-size: 22px;
     font-weight: bold; 
 }
 
-.comment-time{
+.time{
     font-size: 14px;
 }
 
@@ -134,8 +134,14 @@ p {
     margin-left: 300px;
 }
 
+.street-result{
+    height: 600px;
+    width: 750px;
+}
 
-
-
+.instaresult{
+    height: 550px;
+    width: 500px;
+}
 
 

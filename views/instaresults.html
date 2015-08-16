@@ -2,19 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Show</title>
+    <title>View all topics</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/combo?pure/0.6.0/base-min.css&pure/0.6.0/grids-min.css&pure/0.6.0/grids-responsive-min.css">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.0.2/css/hover-min.css">
+    <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+
+
 </head>
 <body>
+
+    <div class="pure-g wrapper">
+        <header class="pure-u-1">
+            <div class="header-box">
+                <h1>UNIMPRESSIVE INTERNET FORUM</h1>
+                <h3>Trolling Optional</h3> 
+                <!-- Nav -->   
+                <nav class="pure-menu pure-menu-horizontal pure-u-1">
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item">
+                      <a href="/topics" class="pure-menu-link"><i class="fa fa-home fa-4x"></i></a>
+                    </li>
+                    <li class="pure-menu-item">
+                      <a href="/topics/new" class="pure-menu-link"><i class="fa fa-pencil fa-4x"></i></a>
+                    </li>
+                </ul>
+                </nav>     
+            </div>
+        </header>
+
+<!-- body -->
+    <div class="pure-g explain-wrapper">
+    <div class="pure-u-1-2"><div class="street-view"><p>Use a Street View pic for your post</p></div></div>
+    <div class="pure-u-1-2"><div class="insta-view"><p>Use an Instagram pic for your post</p></div></div>
+    </div>
+    <div class="pure-g pure-menu pure-menu-horizontal sort-search">
+    <form class="pure-u-1-2" action="/topics/google_maps" method="GET">
+        <input type="text" name="maps" placeholder="search for an address">
+        <input type="submit" value="search">
+    </form> 
+    <form class="pure-u-1-2" action="/topics/instagram" method="GET">
+        <input type="text" name="instagram" placeholder="search instagram">
+        <input type="submit" value="search">
+    </form>
+    </div>
+    <div class="pure-u-1">
+        
     <h1>Picture Search Results</h1>
     <h3>Your search was for: #<%=tag%></h3>
-    <a href="/topics">Go back</a>
     <br><br>
     <% pics.forEach(function(el){ %>
+    <div class="pure-u-1">
+        
     <form action="/topics/instagram" method="POST">
-        <img src=<%=el%> > <br>
+        <img class="instaresult" src=<%=el%> > <br>
         <input type="text" name="username" placeholder="username"><br>
         <input type="text" name="title" placeholder="Image post title"><br>
-        <textarea name="body" rows="3" cols="50" placeholder="Enter your post or caption here..."></textarea>
+        <textarea name="body" rows="3" cols="30" placeholder="Enter your post or caption here..."></textarea>
         <input type="hidden" name="views" value=0>
         <input type="hidden" name="comments" value=0>
         <input type="hidden" name="geolocation" value=0>
@@ -23,6 +69,8 @@
         <input type="hidden" name="downvotes" value=0><br>
         <input type="submit" value="Submit Image Post">
     </form>
+    </div>
     <% }) %>
+    </div>
 </body>
 </html>

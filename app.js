@@ -35,7 +35,6 @@ app.get('/topics', function(req, res){
       console.log(err)
     } else {
       var topicsData = rows;
-      console.log(topicsData[2].img)
       var template = fs.readFileSync('./views/alltopics.html', 'utf8');
       var rendered = ejs.render(template, {topicsData: topicsData, google_api: google_api});
       res.send(rendered);
@@ -140,26 +139,28 @@ app.get('/topicsview', function(req, res){
   })
 })//end of app.get topics/view
 
-app.get('/searchtopics', function(req, res){
-  console.log(req.query.search);
-  searchArray = [];
-  db.all("SELECT comments.cmt_body, topics.body, topics.title FROM topics LEFT OUTER JOIN comments ON comments.topics_id = topics.id;", function(err, rows){
-    if (err){
-      console.log(err)
-    } else {
-      //console.log(rows);
-      rows.forEach(function (el, index, array){
-        searchArray.push(el.body);
-      });
-      searchArray.toString();
-      console.log(searchArray);
-      var searching = _.contains(searchArray, "feed");
-      console.log(searching);
-      //console.log(rows);
-    }
-    
-  })//end of db.all SELECT 
-})//end of app.get /search
+
+  app.get('/searchtopics', function(req, res){
+    var rowsArray = [];
+    db.all("SELECT * FROM topics INNER JOIN comments ON topics.id = comments.topics_id;", function(err, rows){
+      if (err){
+        console.log(err)
+      } else {
+        var data = rows;
+        data.forEach(function (el){
+          if (el.body.search(req.query.search) >= 0 
+            || el.title.search(req.query.search) >= 0 
+            || el.cmt_body.search(req.query.search) >= 0){
+            console.log(req.query.search);
+            console.log(el);
+            
+          } else {
+            console.log('nothing found');
+          }
+        })//end of loop
+      }//end of first else
+    })//end of db.all
+  })//end of app.get
 
 
 app.get('/topics/instagram', function(req, res){
@@ -209,13 +210,13 @@ app.post('/topics/instagram', function(req, res){
 app.get('/topics/google_maps', function(req, res){
   console.log('google maps route hit');
   var googleApi = process.env.google_streetview_api;
-  var query = req.query.maps;
-  var query = query.replace(/ /g, "+");
+  var originalQuery = req.query.maps;
+  var query = originalQuery.replace(/ /g, "+");
   console.log(query);
   var requestUrl = "https://maps.googleapis.com/maps/api/streetview?key="+googleApi+"&size=600x400&location="+query
   request.get(requestUrl, function(err, response, body){
     var template = fs.readFileSync('./views/streetview.html', 'utf8');
-    var render = ejs.render(template, {body: body, requestUrl: requestUrl, googleApi: googleApi, query:query});
+    var render = ejs.render(template, {body: body, requestUrl: requestUrl, googleApi: googleApi, query:query, originalQuery: originalQuery});
     res.send(render);
   })//end of request.get
 })//end of app.post google_maps

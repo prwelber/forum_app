@@ -15,7 +15,6 @@
 <body>
 
     <div class="pure-g wrapper">
-    <div class="pure-g wrapper">
         <header class="pure-u-1">
             <div class="header-box">
                 <h1>UNIMPRESSIVE INTERNET FORUM</h1>
@@ -24,10 +23,10 @@
                 <nav class="pure-menu pure-menu-horizontal pure-u-1">
                 <ul class="pure-menu-list">
                     <li class="pure-menu-item">
-                      <a href="/topics" class="pure-menu-link"><i class="fa fa-eye fa-4x"></i></a>
+                      <a href="/topics" class="pure-menu-link"><i class="fa fa-home fa-4x"></i></a>
                     </li>
                     <li class="pure-menu-item">
-                      <a href="/topics/new" class="pure-menu-link"><i class="fa fa-plus fa-4x"></i></a>
+                      <a href="/topics/new" class="pure-menu-link"><i class="fa fa-pencil fa-4x"></i></a>
                     </li>
                 </ul>
                 </nav>     
@@ -53,13 +52,13 @@
 <!-- topic -->
         <div class="pure-u-1 topic-container">
             <div class="topic-content">
-                Username: <%= rows[0].username %> <br>
-                Post title/caption: <%= rows[0].title %> <br>
+                <p class="username"> <%= rows[0].username %></p>
+                <p class="username">Post Title: <%= rows[0].title %></p>
                 <img class="topic-img" src=<%=rows[0].img%>> <br>
-                <%= rows[0].body %> <br>
-                Posted on: <%= rows[0].timestamp %> <br>
-                Posted from: <%= rows[0].geolocation %> <br>
-                upvotes: <%= rows[0].upvotes %> <br>
+                <p class="body"> <%= rows[0].body %></p>
+                <p class="time"> <%= rows[0].timestamp %></p>
+                <p class="time"> Posted from: <%= rows[0].geolocation %></p>
+                <p class="time"> upvotes: <%= rows[0].upvotes %></p>
             </div>
         </div>
         <!-- comments -->
@@ -73,9 +72,9 @@
                                 <%subData.forEach(function(el, i, arr){%>
                                 <div class="pure-u-1">
                                 <div class="comments-text">
-                                    <p class="comment-username"><%=el.cmt_username%></p>
-                                    <p class="comment-body"><%=el.cmt_body%></p>
-                                    <p class="comment-time"> <%=el.cmt_timestamp%></p>
+                                    <p class="username"><%=el.cmt_username%></p>
+                                    <p class="body"><%=el.cmt_body%></p>
+                                    <p class="time"> <%=el.cmt_timestamp%></p>
                                     <form class="pure-form" action="/topics/<%=subData[0].id%>/comment/subcomment/<%=el.cmt_id%>" method="POST">
                                         <input type="text" name="username" placeholder="username" style="width: 100px; height: 30px;">
                                         <textarea name="body" cols="30" rows="1" placeholder="subcomment" style="height: 30px;"></textarea>
@@ -119,5 +118,6 @@
             </div>
         </div>    
     </div>
+ </div>   
 </body>
 </html>

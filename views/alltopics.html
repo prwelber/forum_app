@@ -13,7 +13,7 @@
 <body>
 <form action="/searchtopics" method="GET">
         Search for a post by keyword: <input type="text" name="search" placeholder="ex: cupcakes">
-        <input type="submit" value="keyword search">
+        <button type="submit"><i class="fa fa-search fa-1x"></i></button>
     </form>
     <div class="pure-g wrapper">
         <header class="pure-u-1">
@@ -24,10 +24,10 @@
                 <nav class="pure-menu pure-menu-horizontal pure-u-1">
                 <ul class="pure-menu-list">
                     <li class="pure-menu-item">
-                      <a href="/topics" class="pure-menu-link"><i class="fa fa-eye fa-4x"></i></a>
+                      <a href="/topics" class="pure-menu-link"><i class="fa fa-home fa-4x"></i></a>
                     </li>
                     <li class="pure-menu-item">
-                      <a href="/topics/new" class="pure-menu-link"><i class="fa fa-plus fa-4x"></i></a>
+                      <a href="/topics/new" class="pure-menu-link"><i class="fa fa-pencil fa-4x"></i></a>
                     </li>
                 </ul>
                 </nav>         
@@ -41,13 +41,13 @@
     <div class="pure-u-1-3"><div class="sort"><p>View posts by (most to least)</p></div></div>
     </div>
     <div class="pure-u-1-3 pure-menu pure-menu-horizontal sort-search">
-    <form class="pure-u-1-3" action="topics/google_maps" method="GET">
+    <form class="pure-u-1-3" action="/topics/google_maps" method="GET">
         <input type="text" name="maps" placeholder="search for an address">
-        <input type="submit" value="search">
+        <button type="submit"><i class="fa fa-street-view fa-1x"></i></button>
     </form> 
     <form class="pure-u-1-3" action="/topics/instagram" method="GET">
         <input type="text" name="instagram" placeholder="search instagram">
-        <input type="submit" value="search">
+        <button type="submit"><i class="fa fa-instagram fa-1x"></i></button>
     </form>
     <form class="pure-u-1-3" action="/topicsview" method="GET">
         <select name="view">
@@ -56,7 +56,7 @@
             <option value="downvotes">Downvotes</option>
             <option value="views">Views</option>
         </select>
-        <input type="submit">
+        <button type="submit"><i class="fa fa-sort-amount-desc fa-1x"></i></button>
     </form>
     </div>
     <div class="pure-g topics-container">
@@ -78,7 +78,7 @@
                     <p class="upvotes"><%= el.upvotes %> upvotes </p>
                     <p class="comments"><%=el.comments%> comments</p>
                     <form action="/topics/<%=el.id%>/upvote?_method=PUT" method="POST">
-                        <input type="submit" value="upvote this post">
+                        <input type="submit" value="upvote">
                     </form>
                     <!-- <a href="/topics/<%=el.id%>">View Post</a> -->
                 
